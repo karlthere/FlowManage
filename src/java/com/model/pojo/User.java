@@ -51,9 +51,7 @@ public class User  implements java.io.Serializable {
        this.projects = projects;
     }
    
-     @Id 
-
-    
+    @Id
     @Column(name="id", unique=true, nullable=false)
     public int getId() {
         return this.id;
@@ -103,7 +101,7 @@ public class User  implements java.io.Serializable {
         this.password = password;
     }
 
-@ManyToMany(fetch=FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name="task_worker", catalog="flow_manage", joinColumns = { 
         @JoinColumn(name="user_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
         @JoinColumn(name="task_id", nullable=false, updatable=false) })
@@ -115,7 +113,7 @@ public class User  implements java.io.Serializable {
         this.tasks = tasks;
     }
 
-@ManyToMany(fetch=FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(name="project_worker", catalog="flow_manage", joinColumns = { 
         @JoinColumn(name="user_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
         @JoinColumn(name="project_id", nullable=false, updatable=false) })
