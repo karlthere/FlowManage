@@ -6,6 +6,7 @@
 package com.dao;
 
 import com.model.pojo.Project;
+import com.model.pojo.Task;
 import com.util.HibernateUtil;
 import java.util.List;
 import org.hibernate.Session;
@@ -43,6 +44,11 @@ public class ProjectDAO {
         
         session.close();
         return project;
+    }
+    
+    public List<Task> getProjectTasks(int projectId) {
+        TaskDAO taskDAO = new TaskDAO();
+        return taskDAO.getTasks(projectId);
     }
     
     public void addProject(Project newProject) {

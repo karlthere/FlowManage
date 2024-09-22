@@ -6,7 +6,9 @@
 package com.dao;
 import com.model.pojo.Task;
 import com.util.HibernateUtil;
+import java.util.List;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -15,6 +17,20 @@ import org.hibernate.Transaction;
  * @author pc
  */
 public class TaskDAO {
+    public List<Task> getTasks(int projectId) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Task> tasks = null;
+        try {
+            Query query = session.createQuery("FROM tasks WHERE project_id = :projectId");
+            query.setParameter("projectId", projectId);
+            tasks = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return tasks;
+    }
+    
     public void addTask(Task newTask) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
