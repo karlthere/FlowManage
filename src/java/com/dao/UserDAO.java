@@ -10,6 +10,7 @@ import com.util.HibernateUtil;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -41,13 +42,27 @@ public class UserDAO {
             session.beginTransaction();  
             Query qu = session.createQuery("From users U WHERE U.id = :userID");
             qu.setParameter("userID", id);
-            
+            user = (User) qu.uniqueResult();
             session.getTransaction().commit();  
-        } catch (Exception e) {  
+        } catch (Exception e    ) {  
             e.printStackTrace();  
             session.getTransaction().rollback();  
         }  
         session.close();  
-        return users;  
+        return user;  
+    }
+    
+    public void addUser(User newUser) {
+        Session session = HibernateUtil.getSessionFactory().openSession();  
+        try {  
+            session.beginTransaction();
+            session.save(newUser);
+            session.getTransaction().commit();  
+        }  
+        catch (Exception e) {  
+            e.printStackTrace();
+            session.getTransaction().rollback();  
+        }  
+        session.close(); 
     }
 }
