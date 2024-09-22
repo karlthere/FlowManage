@@ -52,6 +52,23 @@ public class UserDAO {
         return user;  
     }
     
+    public User getUserByEmail(String email) {
+        User user = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();  
+        try {  
+            session.beginTransaction();  
+            Query qu = session.createQuery("From users U WHERE U.email = :email");
+            qu.setParameter("email", email);
+            user = (User) qu.uniqueResult();
+            session.getTransaction().commit();  
+        } catch (Exception e    ) {  
+            e.printStackTrace();  
+            session.getTransaction().rollback();  
+        }  
+        session.close();  
+        return user;  
+    }
+    
     public void addUser(User newUser) {
         Session session = HibernateUtil.getSessionFactory().openSession();  
         try {  
