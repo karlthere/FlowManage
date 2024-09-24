@@ -15,13 +15,19 @@ import com.dao.UserDAO;
  */
 public class UserService {
     private final UserDAO userDAO = new UserDAO();
-    public void createUser(String firstName, String lastName, String email, String password) {
+    public boolean createUser(String firstName, String lastName, String email, String password) {
         try {
             String hashedPassword = HashUtil.createHash(password);
-            User newUser = new User(firstName, lastName, email, password);
-            userDAO.addUser(newUser);
+            User newUser = new User(firstName, lastName, email, hashedPassword);
+            boolean isSuccess = userDAO.addUser(newUser);
+            if (!isSuccess) {
+                throw new Exception("Failed to create new user");
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        
+        return true;
     }
 }

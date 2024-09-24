@@ -1,5 +1,5 @@
 package com.model.pojo;
-// Generated Sep 20, 2024 1:42:10 PM by Hibernate Tools 4.3.1
+// Generated Sep 24, 2024 1:32:00 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -28,27 +30,25 @@ import javax.persistence.TemporalType;
 public class Project  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private Status status;
      private String title;
      private String overview;
      private Date deadline;
-     private Set users = new HashSet(0);
-     private Set tasks = new HashSet(0);
+     private Set<User> users = new HashSet<User>(0);
+     private Set<Task> tasks = new HashSet<Task>(0);
 
     public Project() {
     }
 
 	
-    public Project(int id, Status status, String title, String overview, Date deadline) {
-        this.id = id;
+    public Project(Status status, String title, String overview, Date deadline) {
         this.status = status;
         this.title = title;
         this.overview = overview;
         this.deadline = deadline;
     }
-    public Project(int id, Status status, String title, String overview, Date deadline, Set users, Set tasks) {
-       this.id = id;
+    public Project(Status status, String title, String overview, Date deadline, Set<User> users, Set<Task> tasks) {
        this.status = status;
        this.title = title;
        this.overview = overview;
@@ -57,19 +57,19 @@ public class Project  implements java.io.Serializable {
        this.tasks = tasks;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.LAZY, targetEntity = Status.class)
     @JoinColumn(name="status_id", nullable=false)
     public Status getStatus() {
         return this.status;
@@ -109,24 +109,24 @@ public class Project  implements java.io.Serializable {
         this.deadline = deadline;
     }
 
-@ManyToMany(fetch=FetchType.LAZY)
+@ManyToMany(fetch=FetchType.LAZY, targetEntity = User.class)
     @JoinTable(name="project_worker", catalog="flow_manage", joinColumns = { 
         @JoinColumn(name="project_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
         @JoinColumn(name="user_id", nullable=false, updatable=false) })
-    public Set getUsers() {
+    public Set<User> getUsers() {
         return this.users;
     }
     
-    public void setUsers(Set users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="project")
-    public Set getTasks() {
+@OneToMany(fetch=FetchType.LAZY, mappedBy="project", targetEntity = Task.class)
+    public Set<Task> getTasks() {
         return this.tasks;
     }
     
-    public void setTasks(Set tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 

@@ -1,5 +1,5 @@
 package com.model.pojo;
-// Generated Sep 20, 2024 1:42:10 PM by Hibernate Tools 4.3.1
+// Generated Sep 24, 2024 1:32:00 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,35 +23,33 @@ import javax.persistence.Table;
 public class Status  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private String status;
-     private Set projects = new HashSet(0);
-     private Set tasks = new HashSet(0);
+     private Set<Project> projects = new HashSet<Project>(0);
+     private Set<Task> tasks = new HashSet<Task>(0);
 
     public Status() {
     }
 
 	
-    public Status(int id, String status) {
-        this.id = id;
+    public Status(String status) {
         this.status = status;
     }
-    public Status(int id, String status, Set projects, Set tasks) {
-       this.id = id;
+    public Status(String status, Set<Project> projects, Set<Task> tasks) {
        this.status = status;
        this.projects = projects;
        this.tasks = tasks;
     }
    
-     @Id 
+     @Id @GeneratedValue(strategy=IDENTITY)
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -63,21 +63,21 @@ public class Status  implements java.io.Serializable {
         this.status = status;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="status")
-    public Set getProjects() {
+@OneToMany(fetch=FetchType.LAZY, mappedBy="status", targetEntity = Project.class)
+    public Set<Project> getProjects() {
         return this.projects;
     }
     
-    public void setProjects(Set projects) {
+    public void setProjects(Set<Project> projects) {
         this.projects = projects;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="status")
-    public Set getTasks() {
+@OneToMany(fetch=FetchType.LAZY, mappedBy="status", targetEntity = Task.class)
+    public Set<Task> getTasks() {
         return this.tasks;
     }
     
-    public void setTasks(Set tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 

@@ -54,18 +54,19 @@ body {
     grid-area: 1 / 1 / 3 / 3;
     height: 100%;
     padding: 15px 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .header a {
     text-decoration: none;
     color: #BB9CC0;
-    color: var(--purple, #BB9CC0);
     font-family: Alata;
     font-size: 15px;
     font-style: normal;

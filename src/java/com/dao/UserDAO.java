@@ -69,17 +69,19 @@ public class UserDAO {
         return user;  
     }
     
-    public void addUser(User newUser) {
+    public boolean addUser(User newUser) {
         Session session = HibernateUtil.getSessionFactory().openSession();  
         try {  
             session.beginTransaction();
             session.save(newUser);
-            session.getTransaction().commit();  
+            session.getTransaction().commit();
         }  
         catch (Exception e) {  
             e.printStackTrace();
-            session.getTransaction().rollback();  
+            session.getTransaction().rollback();
+            return false;
         }  
-        session.close(); 
+        session.close();
+        return true;
     }
 }

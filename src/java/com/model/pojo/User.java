@@ -1,5 +1,5 @@
 package com.model.pojo;
-// Generated Sep 20, 2024 1:42:10 PM by Hibernate Tools 4.3.1
+// Generated Sep 24, 2024 1:32:00 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -23,33 +25,31 @@ import javax.persistence.Table;
 public class User  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private String firstName;
      private String lastName;
      private String email;
      private String password;
-     private Set tasks = new HashSet(0);
-     private Set projects = new HashSet(0);
+     private Set<Task> tasks = new HashSet<Task>(0);
+     private Set<Project> projects = new HashSet<Project>(0);
+     private Set<User> contacts = new HashSet<User>(0);
 
     public User() {
     }
 
 	
-    public User(int id, String firstName, String lastName, String email, String password) {
-        this.id = id;
+    public User(String firstName, String email, String password) {
         this.firstName = firstName;
         this.email = email;
         this.password = password;
     }
-    
     public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.email = email;
-        this.password = password;
+       this.firstName = firstName;
+       this.lastName = lastName;
+       this.email = email;
+       this.password = password;
     }
-    
-    public User(int id, String firstName, String lastName, String email, String password, Set tasks, Set projects) {
-       this.id = id;
+    public User(String firstName, String lastName, String email, String password, Set<Task> tasks, Set<Project> projects) {
        this.firstName = firstName;
        this.lastName = lastName;
        this.email = email;
@@ -58,16 +58,25 @@ public class User  implements java.io.Serializable {
        this.projects = projects;
     }
    
-    @Id
+     @Id @GeneratedValue(strategy=IDENTITY)
+
+    
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
+    public String getFullName() {
+        if (this.lastName == null) {
+            return this.firstName;
+        }
+        
+        return this.firstName + " " + this.lastName;
+    }
     
     @Column(name="first_name", nullable=false, length=50)
     public String getFirstName() {
@@ -108,27 +117,42 @@ public class User  implements java.io.Serializable {
         this.password = password;
     }
 
-    @ManyToMany(fetch=FetchType.LAZY)
+@ManyToMany(fetch=FetchType.LAZY, targetEntity = Task.class)
     @JoinTable(name="task_worker", catalog="flow_manage", joinColumns = { 
         @JoinColumn(name="user_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
         @JoinColumn(name="task_id", nullable=false, updatable=false) })
-    public Set getTasks() {
+    public Set<Task> getTasks() {
         return this.tasks;
     }
     
-    public void setTasks(Set tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 
-    @ManyToMany(fetch=FetchType.LAZY)
+@ManyToMany(fetch=FetchType.LAZY, targetEntity = Project.class)
     @JoinTable(name="project_worker", catalog="flow_manage", joinColumns = { 
         @JoinColumn(name="user_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
         @JoinColumn(name="project_id", nullable=false, updatable=false) })
-    public Set getProjects() {
+    public Set<Project> getProjects() {
         return this.projects;
     }
     
-    public void setProjects(Set projects) {
+    @ManyToMany(fetch=FetchType.LAZY, targetEntity = User.class)
+    @JoinTable(name="contact", catalog="flow_manage", joinColumns={
+        @JoinColumn(name="user_id_a", nullable=false, updatable=false)
+    }, inverseJoinColumns = {
+        @JoinColumn(name="user_id_b", nullable=false, updatable=false)
+    })
+    public Set<User> getContacts() {
+        return this.contacts;
+    }
+    
+    public void setContacts(Set<User> contacts) {
+        this.contacts = contacts;
+    }
+    
+    
+    public void setProjects(Set<Project> projects) {
         this.projects = projects;
     }
 

@@ -2,10 +2,4 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="flow_manage"/>
-  <table-filter match-name="task"/>
-  <table-filter match-name="user"/>
-  <table-filter match-name="project"/>
-  <table-filter match-name="task_worker"/>
-  <table-filter match-name="project_worker"/>
-  <table-filter match-name="status"/>
 </hibernate-reverse-engineering>
